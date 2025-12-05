@@ -1,0 +1,568 @@
+/* --- GLOBAL RESET & FONT --- */
+.App {
+  width: 100vw;
+  height: 100vh;
+  background: #f4f4f4;
+  color: #212121;
+  font-family: "Open Sans", sans-serif;
+  display: grid;
+  place-items: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* --- LOGIN / REGISTER SCREEN --- */
+.joinChatContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.joinChatContainer h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.joinChatContainer input {
+  width: 250px;
+  height: 40px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+.joinChatContainer button {
+  width: 100%;
+  height: 45px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  background: #43a047;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.joinChatContainer button:hover {
+  background: #2e7d32;
+}
+
+/* --- MAIN CHAT LAYOUT --- */
+.chat-container {
+  display: flex;
+  width: 900px; /* Wide container */
+  height: 600px;
+  background: white;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  overflow: hidden; /* Keeps borders rounded */
+}
+
+/* --- SIDEBAR (ACTIVE USERS) --- */
+.user-sidebar {
+  flex: 25%; /* Takes up 25% width */
+  background-color: #263238;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #1c262b;
+}
+
+.user-sidebar h3 {
+  font-size: 16px;
+  padding: 15px;
+  margin: 0;
+  background: #1f2a30;
+  border-bottom: 1px solid #1c262b;
+  text-align: center;
+}
+
+.user-sidebar ul {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.user-sidebar li {
+  padding: 10px;
+  margin-bottom: 5px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* Highlight "You" */
+.user-sidebar li.me {
+  background: #43a047; 
+  font-weight: bold;
+}
+
+.user-sidebar li::before {
+  content: "•";
+  color: #00e676; /* Green Online Dot */
+  font-size: 25px;
+  line-height: 0;
+  margin-right: 10px;
+}
+
+/* --- CHAT WINDOW AREA --- */
+.chat-window {
+  flex: 75%; /* Takes up 75% width */
+  display: flex;
+  flex-direction: column;
+  position: relative; /* For settings menu positioning */
+}
+
+.chat-header {
+  height: 50px;
+  background: #263238;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-left: 1px solid #37474f;
+}
+
+.chat-header p {
+  color: #fff;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Settings Icon */
+.settings-icon {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.3s;
+  user-select: none;
+}
+.settings-icon:hover {
+  transform: rotate(90deg);
+}
+
+/* --- SETTINGS DROPDOWN MENU --- */
+.settings-menu {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings-menu p {
+  margin: 0 0 10px 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.theme-options {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.color-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.color-circle:hover {
+  transform: scale(1.1);
+  border-color: #43a047;
+}
+
+/* --- CHAT BODY (MESSAGES) --- */
+.chat-body {
+  flex: 1; /* Fills remaining height */
+  overflow-y: scroll;
+  padding: 10px;
+  background: #fff; /* Default, overridden by inline style */
+}
+
+/* Custom Scrollbar */
+.chat-body::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-body::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: #ccc; 
+  border-radius: 4px;
+}
+
+.message {
+  display: flex;
+  padding: 5px;
+}
+
+/* Message Bubbles */
+.message-content {
+  max-width: 300px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 15px;
+  overflow-wrap: break-word;
+}
+
+/* SENT Messages (Right) */
+#you {
+  justify-content: flex-end;
+}
+#you .message-content {
+  background-color: #43a047;
+  color: white;
+  border-top-right-radius: 0; /* Corner effect */
+}
+
+/* RECEIVED Messages (Left) */
+#other {
+  justify-content: flex-start;
+}
+#other .message-content {
+  background-color: #f1f0f0;
+  color: black;
+  border-top-left-radius: 0; /* Corner effect */
+}
+
+.message-meta {
+  display: flex;
+  font-size: 11px;
+  margin-top: 3px;
+  opacity: 0.8;
+}
+
+#you .message-meta {
+  justify-content: flex-end;
+}
+
+/* --- CHAT FOOTER (INPUT) --- */
+.chat-footer {
+  height: 50px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  background: #fff;
+  align-items: center;
+}
+
+.chat-footer input[type="text"] {
+  flex: 1;
+  height: 100%;
+  border: none;
+  padding: 0 15px;
+  font-size: 15px;
+  outline: none;
+}
+
+.chat-footer button {
+  width: 50px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #555;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.chat-footer button:hover {
+  color: #43a047;
+}
+
+/* File Upload Button specific */
+.file-btn {
+  font-size: 22px !important;
+  padding-left: 10px;
+}
+
+/* --- Typing Indicator --- */
+.typing-indicator {
+  color: #888;
+  font-style: italic;
+  font-size: 12px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  animation: fadeIn 0.5s;
+}
+
+.typing-indicator p {
+  margin: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- Icon Buttons (Paperclip & Mic) --- */
+.icon-btn {
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: transform 0.2s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+}
+
+/* --- Recording Animation --- */
+.recording {
+  color: red;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Adjust Audio Player size in bubbles */
+audio {
+  height: 40px;
+  margin-top: 5px;
+}
+
+/* --- Message Actions (Edit/Delete) --- */
+.msg-actions {
+  margin-left: 10px;
+  display: flex;
+  gap: 5px;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s;
+}
+
+/* Show actions only when hovering over the message */
+.message:hover .msg-actions {
+  opacity: 1;
+}
+
+.msg-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  opacity: 0.6;
+}
+
+.msg-actions button:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* --- Edited Label --- */
+.edited-label {
+  font-size: 10px;
+  color: #eee;
+  display: block;
+  text-align: right;
+  margin-top: -5px;
+  font-style: italic;
+}
+
+/* Ensure actions align correctly for "you" vs "other" */
+#you .message-meta {
+  align-items: center;
+}
+
+/* --- SIDEBAR TABS --- */
+.sidebar-tabs {
+  display: flex;
+  background-color: #1f2a30;
+  border-bottom: 1px solid #1c262b;
+}
+
+.sidebar-tabs button {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #888;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.sidebar-tabs button:hover {
+  background-color: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.sidebar-tabs button.active-tab {
+  color: white;
+  border-bottom: 3px solid #43a047;
+}
+
+/* --- STATUS DOTS --- */
+.status-dot {
+  font-size: 18px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.status-dot.online {
+  color: #00e676; /* Green */
+}
+
+.status-dot.offline {
+  color: #78909c; /* Gray */
+}
+
+/* Remove the old ::before content if it exists from previous steps */
+.user-sidebar li::before {
+  content: ""; 
+  margin-right: 0;
+}
+
+/* Sidebar List Styling */
+.sidebar-list {
+  padding: 10px;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.sidebar-list li {
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-list li:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.sidebar-list li.active-room {
+  background: #43a047;
+  font-weight: bold;
+  border-left: 4px solid white;
+}
+
+/* Create Group Form */
+.create-group-container {
+  margin-top: 15px;
+  display: flex;
+  gap: 5px;
+  border-top: 1px solid #455a64;
+  padding-top: 15px;
+}
+
+.create-group-container input {
+  width: 70%;
+  padding: 5px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+}
+
+.create-group-container button {
+  width: 25%;
+  background: #43a047;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* --- Header Layout --- */
+.chat-header {
+  display: flex;
+  justify-content: space-between; /* Space out title and controls */
+  align-items: center;
+  padding: 0 15px; /* Add padding */
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* --- Logout Button --- */
+.logout-btn {
+  background-color: #e53935; /* Red */
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #c62828;
+}
+
+/* Fix Settings Icon positioning since we changed header layout */
+.settings-icon {
+  position: static; /* Remove absolute positioning */
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+}
+
+/* --- Avatars --- */
+.avatar-small {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 8px;
+  border: 1px solid #555;
+}
+
+.avatar-msg {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  align-self: flex-start; /* Align to top of bubble */
+}
+
+/* Adjust Sidebar List Item to align items */
+.sidebar-list li {
+  display: flex;
+  align-items: center;
+  /* ... existing styles ... */
+}
